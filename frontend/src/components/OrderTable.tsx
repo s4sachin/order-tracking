@@ -14,11 +14,11 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
-const socket = io("http://localhost:3000"); // Connect to your backend
+const socket = io("http://localhost:3000"); // Connect to backend
 
 interface Order {
   _id: string;
-  orderName: string; // Updated to string based on your comment
+  orderName: string;
   orderItems: string[];
   status: string;
 }
@@ -26,7 +26,6 @@ interface Order {
 const OrderTable: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
 
-  // Fetch orders initially
   useEffect(() => {
     const fetchOrders = async () => {
       const response = await axios.get("http://localhost:3000/api/orders");
@@ -55,7 +54,7 @@ const OrderTable: React.FC = () => {
       );
     });
 
-    // Cleanup on unmount
+    // Cleanup 
     return () => {
       socket.off("newOrder");
       socket.off("orderUpdated");
@@ -98,7 +97,6 @@ const OrderTable: React.FC = () => {
           </TableHead>
           <TableBody>
             {orders.map((order) => (
-              // <TableRow key={order._id}>
               <TableRow
                 key={order._id}
                 component={Link}
@@ -107,13 +105,12 @@ const OrderTable: React.FC = () => {
                   textDecoration: "none",
                   color: "inherit",
                   "&:hover": {
-                    backgroundColor: "#f5f5f5", // Optional: Change background color on hover
+                    backgroundColor: "#f5f5f5", 
                   },
                 }}
-                style={{ cursor: "pointer" }} // Optional: Change cursor to pointer
+                style={{ cursor: "pointer" }} 
               >
                 <TableCell sx={{ padding: "16px", fontSize: "0.9rem" }}>
-                  {/* Add Link to the Order Name */}
                   <Link
                     to={`/orders/${order._id}`}
                     style={{ textDecoration: "none", color: "inherit" }}
