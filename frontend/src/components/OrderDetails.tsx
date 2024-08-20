@@ -12,7 +12,7 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack"; // Ensure this import path is correct
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"; 
 
 interface Order {
   _id: string;
@@ -22,8 +22,8 @@ interface Order {
 }
 
 function OrderDetails() {
-  const { id } = useParams(); // Get the order ID from the route parameters
-  const navigate = useNavigate(); // For navigation
+  const { id } = useParams(); 
+  const navigate = useNavigate(); 
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -50,10 +50,6 @@ function OrderDetails() {
 
   if (loading) {
     return <Typography variant="h6">Loading...</Typography>;
-  }
-
-  if (error) {
-    return <Typography variant="h6">{error}</Typography>;
   }
 
   if (!order) {
