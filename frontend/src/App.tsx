@@ -1,11 +1,16 @@
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import OrderTable from './components/OrderTable';
+import OrderDetails from './components/OrderDetails';
 
 function App() {
-
   return (
-    <>
-     <h2 className="2xl font-bold">Realtime Order Tracker</h2>
-    </>
-  )
+    <Router>
+      <Routes>
+        <Route path="/orders" element={<OrderTable />} />
+        <Route path="/orders/:id" element={<OrderDetails />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
