@@ -2,13 +2,15 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import mongoose from "mongoose";
 import app from "./app";
+import orderRoutes from "./routes/order.routes";
+require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
-
+const mongoDBUri: string = process.env.MONGODB_URI!;
 // Connect to MongoDB
 mongoose
   .connect(
-    "mongodb+srv://sachinpurohit:sachinpurohit@order-management.h2v2h.mongodb.net/?retryWrites=true&w=majority&appName=order-management"
+    mongoDBUri
   )
   .then(() => {
     console.log("Connected to the database");
@@ -37,6 +39,8 @@ mongoose
         console.log("Admin disconnected:", socket.id);
       });
     });
+
+    app.use("/api", orderRoutes(io));
   })
   .catch((err) => {
     console.error("Failed to connect to the database", err);
