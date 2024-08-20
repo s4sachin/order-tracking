@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -11,14 +12,14 @@ import {
   Paper,
   Typography,
   Box,
+  Grid,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-
-const socket = io("http://localhost:3000"); // Connect to backend
+import Notification from "./NotificationIcon";
+const socket = io("http://localhost:3000"); // Connect to your backend
 
 interface Order {
   _id: string;
-  orderName: string;
+  orderName: string; // Updated to string based on your comment
   orderItems: string[];
   status: string;
 }
@@ -26,6 +27,7 @@ interface Order {
 const OrderTable: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
 
+  // Fetch orders initially
   useEffect(() => {
     const fetchOrders = async () => {
       const response = await axios.get("http://localhost:3000/api/orders");
@@ -54,7 +56,7 @@ const OrderTable: React.FC = () => {
       );
     });
 
-    // Cleanup 
+    // Cleanup on unmount
     return () => {
       socket.off("newOrder");
       socket.off("orderUpdated");
@@ -64,13 +66,17 @@ const OrderTable: React.FC = () => {
 
   return (
     <Box sx={{ padding: 2, width: "100%", overflowX: "auto" }}>
-      <Typography
-        variant="h4"
-        gutterBottom
-        sx={{ textAlign: "center", marginBottom: 2 }}
-      >
-        Orders Dashboard
-      </Typography>
+     <Grid container alignItems="center" sx={{ marginBottom: 2 }}>
+        <Grid item xs={11} container justifyContent="center">
+          <Typography variant="h4" gutterBottom>
+            Orders Dashboard
+          </Typography>
+        </Grid>
+        <Grid item xs={1}>
+          <Notification /> {/* Notification icon on the left */}
+        </Grid>
+        
+      </Grid>
       <TableContainer
         component={Paper}
         sx={{
@@ -97,6 +103,7 @@ const OrderTable: React.FC = () => {
           </TableHead>
           <TableBody>
             {orders.map((order) => (
+              // <TableRow key={order._id}>
               <TableRow
                 key={order._id}
                 component={Link}
@@ -105,12 +112,13 @@ const OrderTable: React.FC = () => {
                   textDecoration: "none",
                   color: "inherit",
                   "&:hover": {
-                    backgroundColor: "#f5f5f5", 
+                    backgroundColor: "#f5f5f5", // Optional: Change background color on hover
                   },
                 }}
-                style={{ cursor: "pointer" }} 
+                style={{ cursor: "pointer" }} // Optional: Change cursor to pointer
               >
                 <TableCell sx={{ padding: "16px", fontSize: "0.9rem" }}>
+                  {/* Add Link to the Order Name */}
                   <Link
                     to={`/orders/${order._id}`}
                     style={{ textDecoration: "none", color: "inherit" }}
